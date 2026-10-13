@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: pagewright
+    runtime: node
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: pagewright-redis
+          property: connectionString
+  - type: keyvalue
+    name: pagewright-redis
+    ipAllowList: []
+    plan: free
